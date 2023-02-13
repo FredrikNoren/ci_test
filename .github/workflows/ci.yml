@@ -1,0 +1,27 @@
+name: Rust
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: stat bar/src/lib.rs
+      - uses: chetan/git-restore-mtime-action@v1
+      - run: stat bar/src/lib.rs
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Leafwing-Studios/cargo-cache@v1
+      - run: find target/debug/.fingerprint ! -path . -exec stat {} +
+        continue-on-error: true
+      - run: CARGO_LOG=cargo::core::compiler::fingerprint=info cargo test --workspace

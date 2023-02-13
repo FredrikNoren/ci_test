@@ -1,0 +1,4 @@
+[workspace]
+default-members = ["foo"]
+members = ["foo", "bar"]
+resolver = "2"
