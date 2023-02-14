@@ -22,6 +22,8 @@ jobs:
       - run: stat bar/src/lib.rs
       - uses: dtolnay/rust-toolchain@stable
       - uses: Leafwing-Studios/cargo-cache@v1
+        with:
+          cache-group: "main"
       - run: find target/debug/.fingerprint ! -path . -exec stat {} +
         continue-on-error: true
       - run: CARGO_LOG=cargo::core::compiler::fingerprint=info cargo test --workspace
